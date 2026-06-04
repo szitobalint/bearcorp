@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bear Corp. - Logisztikai Központ</title>
+    <style>
+        :root {
+            --bg-dark: #191715;
+            --bg-container: #23201d;
+            --bg-card: #2c2722;
+            --forest-green: #253328;
+            --forest-light: #344738;
+            --honey-gold: #f3be7a;
+            --honey-dark: #d4a359;
+            --text-light: #e5dfd9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--forest-green);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--honey-dark);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            letter-spacing: 3px;
+            color: var(--honey-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        nav {
+            background-color: #1c261f;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            padding: 12px 24px;
+            margin: 0 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        nav button:hover {
+            background-color: var(--forest-light);
+            color: var(--honey-gold);
+            transform: translateY(-2px);
+        }
+
+        nav button.active {
+            background-color: var(--honey-dark);
+            color: #111;
+        }
+
+        #btn-dashboard {
+            border: 1px dashed var(--honey-gold);
+            color: var(--honey-gold);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: var(--bg-container);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border: 1px solid #332e29;
+            min-height: 400px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--honey-gold);
+            border-bottom: 2px solid #3a3530;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #3a3530;
+            border-left: 4px solid var(--honey-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #3a3530;
+        }
+
+        th {
+            background-color: var(--forest-green);
+            color: var(--honey-gold);
+        }
+
+        tr:hover {
+            background-color: #352f29;
+        }
+
+        .login-box {
+            max-width: 400px;
+            margin: 40px auto;
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #3a3530;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--honey-gold);
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #191715;
+            border: 1px solid #4a423a;
+            color: #fff;
+            border-radius: 4px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--honey-gold);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--forest-green);
+            color: var(--honey-gold);
+            border: 1px solid var(--honey-dark);
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: var(--forest-light);
+        }
+
+        .status {
+            display: inline-block;
+            background-color: #445c3c;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .badge {
+            background-color: #d4a359;
+            color: #111;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        .badge2 {
+            background-color: #16c1d8;
+            color: #111;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #6e655c;
+            border-top: 1px solid #3a3530;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>BEAR CORP.<img src="letöltés.png" width="100px", height="100px", > </h1> 
+    <p>LOGISZTIKA & SZÁLLÍTMÁNYOZÁS — LAS VENTURAS</p>
+</header>
+
+<nav>
+    <button onclick="showPage('home')" id="btn-home" class="active">Főoldal</button>
+    <button onclick="showPage('about')" id="btn-about">Rólunk</button>
+    <button onclick="showPage('fleet')" id="btn-fleet">Flotta & Adatok</button>
+    <button onclick="showPage('login')" id="btn-login">Bejelentkezés</button>
+    <button onclick="showPage('dashboard')" id="btn-dashboard" style="display: none;">📊 Fuvarnapló (Zárt)</button>
+</nav>
+
+<div class="container">
+    
+    <div id="home" class="page active">
+        <h2>Üdvözöljük a Bear Corp. honlapján!</h2>
+        <p>A San Andreas-i logisztikai piac egyik legmegbízhatóbb szereplőjeként küldetésünk, hogy a ránk bízott árukat a lehető leggyorsabban és legbiztonságosabban juttassuk el a célállomásra.</p>
+        <br>
+        <div class="grid">
+            <div class="card">
+                <h3>Gyors Elérhetőség</h3>
+                <p>Munkatársaink Las Venturas területén éjjel-nappal készen állnak a fuvarok teljesítésére.</p>
+            </div>
+            <div class="card">
+                <h3>Modern Flotta</h3>
+                <p>Nagy teherbírású gépjárműveink garantálják, hogy nincs túl nagy vagy túl nehéz rakomány.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="about" class="page">
+        <h2>Cégtörténet és Információk</h2>
+        <p>A Bear Corp. egy hivatalosan bejegyzett Corporation, melyet John Victoria és Camilla Plaia alapított. Célunk egy olyan összetartó szállítmányozási közösség kiépítése , amely mind a lakosság, mind a többi vállalkozás számára prémium szolgáltatást nyújt.</p>
+        
+        <div class="grid" style="margin-top:20px;">
+            <div class="card">
+                <h3 style="color: var(--honey-gold);">Cégadatok</h3>
+                <p><strong>Alapítás:</strong> 2026. 06. 03.</p>
+                <li><strong>Adószám:</strong> 35263832242</li>
+                <li><strong>Bankszámla:</strong> 111111-618021-384115</li>
+                <p><strong>Státusz:</strong> <span class="status">Aktív / Engedéllyel rendelkezik</span></p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--honey-gold);">Kapcsolattartás</h3>
+                <p><strong>Vezetőség telefonszámai:</strong><br> 1-132-368 | 1-127-131</p>
+                <p><strong>E-mail címeink:</strong><br> cami.plaia@westmail.com<br> jhn.vic44@westmail.com</p>
+            </div>
+             <div class="card">
+                <h3 style="color: var(--honey-gold);">Amit nyújtunk</h3>
+                <p><strong>85%-os jutalék</strong>
+                <p><strong>Heti bónuszok teljesítménytől függően</strong>
+                <p><strong>Baráti hangulat a cégen belül</strong>
+                <p><strong>Kedves, megértő főnökség</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="fleet" class="page">
+        <h2>Vállalati Erőforrások</h2>
+        <p>Az Internal Revenue Service (IRS) felé bejelentett hivatalos vállalati statisztikáink és eszközállományunk:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Megnevezés</th>
+                    <th>Mennyiség / Állapot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Regisztrált Alkalmazottak</td>
+                    <td>2 fő</td>
+                </tr>
+                <tr>
+                    <td>Összes vállalati jármű</td>
+                    <td>2 db</td>
+                </tr>
+                <tr>
+                    <td>Nehéz Tehergépjárművek</td>
+                    <td>2 db (Aktív)</td>
+                </tr>
+                <tr>
+                    <td>Személygépjárművek</td>
+                    <td>0 db</td>
+                </tr>
+                <tr>
+                    <td>Becsült Havi Bevétel</td>
+                    <td>6.000.000 $</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="login" class="page">
+        <div class="login-box" id="login-container">
+            <h2 style="text-align: center; border: none;">Sofőr Terminál</h2>
+            <p style="text-align: center; font-size: 0.9em; color: #aaa; margin-top: -10px;">Vállalati belépési felület</p>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Felhasználónév (IC Név)</label>
+                    <input type="text" id="username" placeholder="Pl. Camilla_Plaia" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Jelszó</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="login-btn">Bejelentkezés</button>
+            </form>
+        </div>
+
+        <div class="login-box" id="logout-container" style="display: none; text-align: center;">
+            <h2>Bejelentkezve mint:</h2>
+            <h3 id="logged-in-user" style="color: var(--honey-gold);"></h3>
+            <p>Sikeresen csatlakozva a vállalati hálózathoz. A <strong>Fuvarnapló</strong> menüpont feloldásra került!</p>
+            <br>
+            <button onclick="handleLogout()" class="login-btn" style="background-color: #8b3a3a; color: white; border: none;">Kijelentkezés</button>
+        </div>
+    </div>
+
+    <div id="dashboard" class="page">
+        <h2>📊 Vállalati Fuvarnapló & Statisztikák</h2>
+        <p>Itt követhető nyomon a sofőrök teljesítménye, a leszállított csomagok száma és az elszámolt bónuszok kifizetése.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Sofőr Neve</th>
+                    <th>Beosztás</th>
+                    <th>Heti bevétel</th>
+                    <th>Felvéve</th>
+                    <th>Teljesítmény Bónusz</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>John Victoria</strong></td>
+                    <td><span class="badge">Tulajdonos</span></td>
+                    <td style="color: #8c1c9bb2;">0 $</td>
+                    <td>2026. 06. 03.</td>
+                    <td style="color: #27ae60;">-</td>
+                </tr>
+                <tr>
+                    <td><strong>Camilla Plaia</strong></td>
+                    <td><span class="badge">Tulajdonos</span></td>
+                    <td style="color: #8c1c9bb2;">0 $</td>
+                    <td>2026. 06. 03.</td>
+                    <td style="color: #27ae60;">- </td>
+                </tr>
+                <tr>
+                    <td><strong>Gáspár Laci</strong></td>
+                    <td><span class="badge2">Sofőr</span></td>
+                    <td style="color: #8c1c9bb2;">0 $</td>
+                    <td>2026. 06. 03.</td>
+                    <td style="color: #27ae60;">520.000 $</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 Bear Corp. | U.S. Department of the Treasury (IRS) Regisztrált szervezet.</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        showPage('home');
+    });
+
+    // ==========================================
+    // 🔐 ITT TUDOD KEZELNI A FELHASZNÁLÓKAT ÉS JELSZAVAKAT
+    // ==========================================
+    const engedelyezettFelhasznalok = {
+        "Camilla_Plaia": "maci2026",      
+        "John_Victoria": "titkosjelszo",  
+        "Proba_Janos": "sofőr123",
+        "Gaspar_Laci": "szia"          
+    };
+    // ==========================================
+
+    function showPage(pageId) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => page.style.display = 'none');
+        
+        const buttons = document.querySelectorAll('nav button');
+        buttons.forEach(button => button.classList.remove('active'));
+        
+        const activePage = document.getElementById(pageId);
+        if(activePage) activePage.style.display = 'block';
+        
+        const activeButton = document.getElementById('btn-' + pageId);
+        if(activeButton) activeButton.classList.add('active');
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value;
+
+        // Ellenőrizzük a listát
+        if (engedelyezettFelhasznalok[user] && engedelyezettFelhasznalok[user] === pass) {
+            document.getElementById('logged-in-user').innerText = user.replace('_', ' ');
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('logout-container').style.display = 'block';
+            
+            document.getElementById('btn-dashboard').style.display = 'inline-block';
+            showPage('dashboard');
+            alert("Üdvözöljük a Bear Corp. rendszerében, " + user + "!");
+        } else {
+            alert("Hozzáférés megtagadva! Hibás felhasználónév vagy jelszó.");
+        }
+    }
+
+    function handleLogout() {
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('logout-container').style.display = 'none';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        
+        document.getElementById('btn-dashboard').style.display = 'none';
+        showPage('home');
+        alert("Sikeresen kijelentkeztél.");
+    }
+</script>
+
+</body>
+</html>
